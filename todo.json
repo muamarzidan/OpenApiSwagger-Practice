@@ -1,0 +1,505 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "EX Todolist RestFul API",
+      "version": "1",
+      "description": "OpenAPI for Todolist Rest API",
+      "termsOfService": "https://omiru.netlify.app/",
+      "contact": {
+        "name": "Muamar Zidan",
+        "email": "codeofomiru11@gmail.com",
+        "url": "https://omiru.netlify.app/"
+      }
+    },
+    "servers": [
+      {
+        "description": "Todolist RESTful API Server",
+        "url": "https://{environment}omiru.netlify.app/api/v1",
+        "variables": {
+          "environment": {
+            "description": "Server Environment",
+            "default": "DEV",
+            "enum": [
+              "DEV",
+              "PROD"
+            ]
+          }
+        }
+      }
+    ],
+    "externalDocs": {
+      "description": "Github",
+      "url": "https://github.com/muamarzidan"
+    },
+    "paths": {
+      "/todolist": {
+        "get": {
+          "security": [
+            {
+              "TodolistAuth": []
+            }
+          ],
+          "tags": [
+            "Todolist"
+          ],
+          "summary": "Get all data todo",
+          "description": "Get all data todolist",
+          "parameters": [
+            {
+              "name": "done",
+              "in": "query",
+              "required": false,
+              "description": "Is include done",
+              "schema": {
+                "type": "boolean",
+                "nullable": true,
+                "default": false
+              }
+            },
+            {
+              "name": "name",
+              "in": "query",
+              "required": false,
+              "description": "Filter todolist by name",
+              "schema": {
+                "type": "string",
+                "nullable": true,
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "examples": {
+                "batu": {
+                  "description": "Example name Batu",
+                  "value": "Batu"
+                },
+                "gunting": {
+                  "description": "Example name Gunting",
+                  "value": "Gunting"
+                },
+                "kertas": {
+                    "description": "Example name Kertas",
+                    "value": "Kertas"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success get all data todolist",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ArrayTodolist"
+                  },
+                  "examples": {
+                    "success": {
+                      "description": "Example success get all data todolist",
+                      "value": [
+                        {
+                          "id": "1",
+                          "name": "Batu",
+                          "priority": 3,
+                          "tags": [
+                            "Batu",
+                            "Suit"
+                          ]
+                        },
+                        {
+                          "id": "2",
+                          "name": "Gunting",
+                          "priority": 5,
+                          "tags": [
+                            "Gunting",
+                            "Suit"
+                          ]
+                        },
+                        {
+                          "id": "3",
+                          "name": "Kertas",
+                          "priority": 4,
+                          "tags": [
+                            "Kertas",
+                            "Suit"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "security": [
+            {
+              "TodolistAuth": []
+            }
+          ],
+          "tags": [
+            "Todolist"
+          ],
+          "summary": "Create new todolist",
+          "description": "Create new data todolist to database",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrUpdateTodolist"
+                },
+                "examples": {
+                  "batu": {
+                    "description": "Example create data todolist Batu",
+                    "value": {
+                      "name": "Batu",
+                      "priority": 3,
+                      "tags": [
+                        "Batu",
+                        "Suit"
+                      ]
+                    }
+                  },
+                  "gunting": {
+                    "description": "Example create data todolist Gunting",
+                    "value": {
+                      "name": "Gunting",
+                      "priority": 5,
+                      "tags": [
+                        "Gunting",
+                        "Suit"
+                      ]
+                    }
+                  },
+                  "kertas": {
+                    "description": "Example create data todolist Kertas",
+                    "value": {
+                      "name": "Kertas",
+                      "priority": 4,
+                      "tags": [
+                        "Kertas",
+                        "Suit"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success create data todolist",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Todolist"
+                  },
+                  "examples": {
+                    "batu": {
+                      "description": "Success create data Batu todolist",
+                      "value": {
+                        "id": "1",
+                        "name": "Batu",
+                        "priority": 3,
+                        "tags": [
+                          "Batu",
+                          "Suit"
+                        ]
+                      }
+                    },
+                    "gunting": {
+                      "description": "Success create data Gunting todolist",
+                      "value": {
+                        "id": "2",
+                        "name": "Gunting",
+                        "priority": 5,
+                        "tags": [
+                          "Gunting",
+                          "Suit"
+                        ]
+                      }
+                    },
+                    "kertas": {
+                      "description": "Success create data Kertas todolist",
+                      "value": {
+                        "id": "2",
+                        "name": "Kertas",
+                        "priority": 4,
+                        "tags": [
+                          "Kertas",
+                          "Suit"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/todolist/{todolistId}": {
+        "put": {
+          "security": [
+            {
+              "TodolistAuth": []
+            }
+          ],
+          "tags": [
+            "Todolist"
+          ],
+          "summary": "Update data todolist",
+          "description": "Update data todolist in database",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/TodolistId"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrUpdateTodolist"
+                },
+                "examples": {
+                  "batu": {
+                    "description": "Example create todolist Batu",
+                    "value": {
+                      "name": "Batu",
+                      "priority": 3,
+                      "tags": [
+                        "Batu",
+                        "Suit"
+                      ]
+                    }
+                  },
+                  "gunting": {
+                    "description": "Example create todolist Gunting",
+                    "value": {
+                      "name": "Gunting",
+                      "priority": 5,
+                      "tags": [
+                        "Gunting",
+                        "Suit"
+                      ]
+                    }
+                  },
+                  "kertas": {
+                    "description": "Example create todolist Kertas",
+                    "value": {
+                      "name": "Kertas",
+                      "priority": 4,
+                      "tags": [
+                        "Kertas",
+                        "Suit"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success update todolist",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Todolist"
+                  },
+                  "examples": {
+                    "batu": {
+                      "description": "Success create Batu todolist",
+                      "value": {
+                        "id": "1",
+                        "name": "Batu",
+                        "priority": 3,
+                        "tags": [
+                          "Batu",
+                          "Suit"
+                        ]
+                      }
+                    },
+                    "gunting": {
+                      "description": "Success create Gunting todolist",
+                      "value": {
+                        "id": "2",
+                        "name": "Gunting",
+                        "priority": 5,
+                        "tags": [
+                          "Gunting",
+                          "Suit"
+                        ]
+                      }
+                    },
+                    "kertas": {
+                      "description": "Success create Kertas todolist",
+                      "value": {
+                        "id": "2",
+                        "name": "Kertas",
+                        "priority": 5,
+                        "tags": [
+                          "Kertas",
+                          "Suit"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "security": [
+            {
+              "TodolistAuth": []
+            }
+          ],
+          "tags": [
+            "Todolist"
+          ],
+          "summary": "Delete data todolist",
+          "description": "Delete data todolist in database",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/TodolistId"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success delete data todolist",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "description": "Success delete data todolist",
+                      "value": {
+                        "success": true
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Failed delete not found data todolist",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "failed": {
+                      "description": "Failed delete data todolist",
+                      "value": {
+                        "success": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "TodolistAuth": {
+          "description": "Authentication for Todolist RESTful API",
+          "type": "apiKey",
+          "in": "header",
+          "name": "X-API-Key"
+        }
+      },
+      "parameters": {
+        "TodolistId": {
+          "name": "todolistId",
+          "in": "path",
+          "required": true,
+          "description": "Todolist id for updated",
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "examples": {
+            "batu": {
+              "description": "Sample todolist id for data Batu",
+              "value": "1"
+            },
+            "gunting": {
+              "description": "Sample todolist id for data Gunting",
+              "value": "2"
+            },
+            "kertas": {
+              "description": "Sample todolist id for data Kertas",
+              "value": "3"
+            }
+          }
+        }
+      },
+      "schemas": {
+        "Todolist": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "priority": {
+              "type": "number",
+              "format": "int32"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "CreateOrUpdateTodolist": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "priority": {
+              "type": "number",
+              "format": "int32"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "ArrayTodolist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Todolist"
+          }
+        }
+      }
+    }
+  }
