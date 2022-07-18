@@ -424,7 +424,7 @@
           "description": "Authentication for Todolist RESTful API",
           "type": "apiKey",
           "in": "header",
-          "name": "X-API-Key"
+          "name": "EX-API-Key"
         }
       },
       "parameters": {
